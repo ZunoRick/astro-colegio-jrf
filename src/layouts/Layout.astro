@@ -3,6 +3,18 @@ import '@/styles/global.css';
 import { ClientRouter, fade, slide } from 'astro:transitions';
 ---
 
+<script>
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	// Re-init animations on every page load (View Transitions compatible)
+	document.addEventListener('astro:page-load', () => {
+		ScrollTrigger.refresh();
+	});
+</script>
+
 <!doctype html>
 <html lang="es">
 	<head>
