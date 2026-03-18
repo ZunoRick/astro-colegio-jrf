@@ -1,1 +1,73 @@
 @import 'tailwindcss';
+
+@theme {
+	/* Brand colors */
+	--color-azul: #1b458c;
+	--color-azul-oscuro: #132f61;
+	--color-azul-claro: #2a5ab5;
+	--color-azul-suave: #e8eef8;
+	--color-dorado: #f2aa24;
+	--color-dorado-oscuro: #c9891a;
+	--color-dorado-claro: #f7c96a;
+	--color-gris: #f4f4f4;
+	--color-texto: #1a1a1a;
+
+	/* Typography */
+	--font-display: 'Outfit', sans-serif;
+	--font-body: 'PT Sans', sans-serif;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		font-family: var(--font-body);
+		color: var(--color-texto);
+		background-color: #ffffff;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-display);
+	}
+}
+
+@layer utilities {
+	.clip-wave {
+		clip-path: ellipse(100% 100% at 50% 0%);
+	}
+
+	.clip-angle {
+		clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+	}
+
+	.clip-angle-reverse {
+		clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 100%);
+	}
+
+	.text-shadow-lg {
+		text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+	}
+
+	.glow-dorado {
+		box-shadow: 0 0 40px 8px rgba(242, 170, 36, 0.35);
+	}
+
+	.card-lift {
+		transition:
+			transform 0.25s ease,
+			box-shadow 0.25s ease;
+	}
+
+	.card-lift:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(27, 69, 140, 0.12);
+	}
+}

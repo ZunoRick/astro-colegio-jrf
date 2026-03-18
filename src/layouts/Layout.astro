@@ -1,36 +1,49 @@
 ---
 import '@/styles/global.css';
-import { ClientRouter, fade, slide } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Colegio Jesús Romero Flores Primaria',
+	description = 'Forjando triunfadores desde 1988',
+} = Astro.props;
 ---
-
-<script>
-	import gsap from 'gsap';
-	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-	gsap.registerPlugin(ScrollTrigger);
-
-	// Re-init animations on every page load (View Transitions compatible)
-	document.addEventListener('astro:page-load', () => {
-		ScrollTrigger.refresh();
-	});
-</script>
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+
+		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=PT+Sans:wght@400;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=PT+Sans:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
+
 		<ClientRouter />
 	</head>
+
 	<body>
-		<h1 class="text-indigo-500 text-2xl">HOLA MUNDO</h1>
 		<slot />
 	</body>
 </html>
+
+<script>
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	gsap.registerPlugin(ScrollTrigger);
+
+	document.addEventListener('astro:page-load', () => {
+		ScrollTrigger.refresh();
+	});
+</script>
