@@ -1,6 +1,12 @@
 ---
 import Navbar from '@/components/Navbar.astro';
 import Layout from '@/layouts/Layout.astro';
+import { api } from '@/config/api';
+import { HomePageSchema } from '@/types';
+
+const res = await api.get('/pages?slug=inicio');
+const data = HomePageSchema.parse(res.data[0]);
+console.log('🚀 ~ res:', data.gallery);
 ---
 
 <Layout>
