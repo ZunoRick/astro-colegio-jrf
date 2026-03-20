@@ -4,6 +4,7 @@ import Layout from '@/layouts/Layout.astro';
 import { api } from '@/config/api';
 import { HomePageSchema } from '@/types';
 import InstalacionesGallery from '@/components/InstalacionesGallery.astro';
+import PromoModal from '@/components/PromoModal.astro';
 
 const res = await api.get('/pages?slug=inicio');
 const data = HomePageSchema.parse(res.data[0]);
@@ -12,4 +13,5 @@ const data = HomePageSchema.parse(res.data[0]);
 <Layout>
 	<Navbar />
 	<InstalacionesGallery gallery={data.gallery} />
+	<PromoModal />
 </Layout>

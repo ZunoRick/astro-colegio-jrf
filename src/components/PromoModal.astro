@@ -1,0 +1,192 @@
+---
+import { Image } from 'astro:assets';
+---
+
+<!-- ── Promotional modal (opens on page load) ── -->
+<div
+	id="promo-modal"
+	class="fixed inset-0 z-[9999] items-center justify-center p-4"
+	style="display:none"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Promoción escolar"
+>
+	<!-- Backdrop -->
+	<div
+		id="promo-backdrop"
+		class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+	>
+	</div>
+
+	<!-- Card -->
+	<div
+		id="promo-card"
+		class="relative z-10 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+	>
+		<!-- Close (top-right) -->
+		<button
+			id="promo-close"
+			class="absolute top-3 right-3 z-30 w-9 h-9 rounded-full bg-black/50 text-white
+             flex items-center justify-center hover:bg-black/80 transition-colors duration-200"
+			aria-label="Cerrar"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2.5"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+		</button>
+
+		<!-- Image + overlay -->
+		<div class="relative">
+			<Image
+				src="http://colegiojrf.local/wp-content/uploads/2026/03/DSC_9055-1024x678.webp"
+				alt="Promoción escolar"
+				width={600}
+				height={420}
+				class="w-full object-cover"
+			/>
+
+			<!-- gradient overlay with promo text -->
+			<div
+				class="absolute inset-0 bg-gradient-to-t from-azul-oscuro/95 via-azul/55 to-transparent
+                  flex flex-col justify-end p-6"
+			>
+				<!-- eyebrow badge -->
+				<div
+					class="inline-flex items-center gap-1.5 mb-3 self-start
+                    bg-dorado/20 border border-dorado/40 rounded-full px-3 py-1"
+				>
+					<span class="w-2 h-2 rounded-full bg-dorado animate-pulse"></span>
+					<span
+						class="font-display font-bold text-dorado text-[11px] uppercase tracking-widest"
+					>
+						Aviso importante
+					</span>
+				</div>
+
+				<h3
+					class="font-display font-extrabold text-white text-2xl md:text-3xl leading-tight mb-2"
+				>
+					¡Inscripciones<br />
+					<span class="text-dorado">Abiertas 2025–2026!</span>
+				</h3>
+				<p class="font-body text-white/80 text-sm mb-5 leading-relaxed">
+					Asegura el lugar de tu hijo en nuestra comunidad educativa. Cupo
+					limitado — ¡no te quedes sin lugar!
+				</p>
+
+				<a
+					href="#contacto"
+					id="promo-cta"
+					class="inline-flex items-center gap-2 self-start bg-dorado text-azul-oscuro
+                 font-display font-bold text-sm px-6 py-3 rounded-full
+                 hover:bg-yellow-300 active:scale-95 transition-all duration-200 shadow-lg"
+				>
+					Contáctanos ahora
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="14"
+						height="14"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2.5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+					</svg>
+				</a>
+			</div>
+		</div>
+
+		<!-- Footer bar -->
+		<div class="bg-azul-oscuro px-5 py-3 flex items-center justify-between">
+			<button
+				id="promo-close-footer"
+				class="text-white/40 text-xs hover:text-white transition-colors"
+			>
+				Cerrar
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	import gsap from 'gsap';
+
+	document.addEventListener('astro:page-load', () => {
+		const STORAGE_KEY = 'jrf_promo_v1';
+		const modal = document.getElementById('promo-modal') as HTMLElement | null;
+		const backdrop = document.getElementById('promo-backdrop');
+		const card = document.getElementById('promo-card');
+		const closeTop = document.getElementById('promo-close');
+		const closeFooter = document.getElementById('promo-close-footer');
+		const ctaBtn = document.getElementById('promo-cta');
+
+		if (!modal) return;
+
+		// ── show ──────────────────────────────────────────────────────────
+		modal.style.display = 'flex';
+		gsap.set(card, { opacity: 0, y: 50, scale: 0.92 });
+		gsap.set(backdrop, { opacity: 0 });
+
+		gsap.to(backdrop, {
+			opacity: 1,
+			duration: 0.35,
+			ease: 'power2.out',
+			delay: 0.25,
+		});
+		gsap.to(card, {
+			opacity: 1,
+			y: 0,
+			scale: 1,
+			duration: 0.55,
+			ease: 'power3.out',
+			delay: 0.35,
+		});
+
+		// ── close logic ───────────────────────────────────────────────────
+		const dismiss = () => {
+			gsap.to(card, {
+				opacity: 0,
+				y: 30,
+				scale: 0.93,
+				duration: 0.3,
+				ease: 'power2.in',
+			});
+			gsap.to(backdrop, {
+				opacity: 0,
+				duration: 0.35,
+				ease: 'power2.in',
+				onComplete: () => {
+					modal.style.display = 'none';
+				},
+			});
+		};
+
+		closeTop?.addEventListener('click', dismiss);
+		closeFooter?.addEventListener('click', dismiss);
+		backdrop?.addEventListener('click', dismiss);
+
+		ctaBtn?.addEventListener('click', () => {
+			dismiss();
+			setTimeout(() => {
+				document
+					.getElementById('contacto')
+					?.scrollIntoView({ behavior: 'smooth' });
+			}, 350);
+		});
+	});
+</script>
